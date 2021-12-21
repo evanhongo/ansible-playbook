@@ -1,0 +1,24 @@
+---
+
+- name: Close ssh check
+  become: yes
+  lineinfile:
+    dest: /etc/ssh/ssh_config
+    state: present
+    regexp: '^StrictHostKeyChecking'
+    line: "StrictHostKeyChecking no"
+
+- name: Check if there already exists rsa key pair
+  stat: 
+    path: "/home/{{ ansible_user }}/.ssh/id_rsa"
+  register: rsa_key_pair
+
+- name: Generate rsa key pair
+  shell: "ssh-keygen -t rsa -b 2048 -N '' -f /home/{{ ansible_user }}/.ssh/id_rsa"
+  when: rsa_key_pair.stat.exists == False
+
+- name: Push keys to all nodes
+  shell: "sshpass -p {{ ansible_password }} ssh-copy-id -i /home/{{ ansible_user }}/.ssh/id_rsa.pub {{ ansible_user }}@{{ item }}"
+  with_items:
+    - "{{ groups.all }}"
+  when: rsa_key_pair.stat.exists == False
