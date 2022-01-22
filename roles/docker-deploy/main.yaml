@@ -1,0 +1,25 @@
+---
+
+- name: Pull image from registry
+  community.docker.docker_image:
+    name: "{{registry}}/{{name}}"
+    tag: "{{tag}}"
+    source: pull
+    force_source: yes
+
+- name: Re-create container
+  community.docker.docker_container:
+    name: "{{name}}"
+    image: "{{registry}}/{{name}}:{{tag}}"
+    state: present
+    recreate: yes
+    published_ports:
+      - "{{port}}:{{port}}"
+    volumes:
+      - /opt/tmp:/tmp
+    detach: yes
+
+- name: Start container
+  community.docker.docker_container:
+    name: "{{name}}"
+    state: started
