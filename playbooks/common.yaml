@@ -1,5 +1,15 @@
 ---
 
+- name: Create users
+  hosts: wormhole
+  vars_files: 
+    - vars/users.yaml
+  roles:
+    - role: create-user
+      become: true
+  tags: 
+    - user
+
 - name: Configure ssh related settings
   hosts: "{{ groups.all }}"
   any_errors_fatal: true

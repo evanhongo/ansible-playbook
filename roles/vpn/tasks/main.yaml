@@ -1,0 +1,24 @@
+- name: Install packages
+  package:
+    name:
+      - openconnect
+      - python3-pip
+    state: present
+
+- name: Install vpn-slice 
+  pip:
+    name: https://github.com/dlenski/vpn-slice/archive/master.zip
+
+- name: Install vpn.service
+  template:
+    src: "{{ role_path }}/templates/vpn.service.j2"
+    dest:  /etc/systemd/system/vpn.service
+  register: install
+
+- name: Reload and start the vpn service 
+  when: install.changed
+  systemd: 
+    daemon_reload: yes
+    enabled: yes
+    name: vpn
+    state: started

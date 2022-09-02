@@ -1,0 +1,11 @@
+[Unit]
+Description= vpn openconnect service
+
+[Service]
+Type=forking
+Restart=always
+StartLimitBurst=3
+ExecStart=/bin/sh -c \
+  "echo '{{ vpn_password }}' | openconnect -u {{ vpn_username }} --authgroup {{ vpn_group}} \
+  -s 'export IDLE_TIMEOUT=100 && vpn-slice {{ vpn_routes }} -v --dump -K' \
+  -b {{ vpn_server }}"

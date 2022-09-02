@@ -13,9 +13,9 @@
   hosts: "{{ groups.staging_service1 }}"
   become: yes
   any_errors_fatal: true
-  roles:
-    - service1
   vars_files:
     - vars/stg/vars-for-docker-compose.yaml
+  roles:
+    - service1  
   tags:
     - service1

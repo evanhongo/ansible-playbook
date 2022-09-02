@@ -1,0 +1,17 @@
+- name: Initiate users
+  loop: "{{ users | default([]) }}"
+  user:
+    name: "{{ item.name }}"
+    shell: "{{ item.shell | default('/bin/bash') }}"
+    remove: "{{ item.remove | default(omit) }}"
+    state: "{{ item.remove | default(false) | ternary('absent','present') }}"
+
+- name: Set publickeys
+  loop: "{{ users | default([]) }}"
+  when: ( item.public_key | default(false) and 
+          item.remove | default(false) | ternary(false, true))
+  register: data
+  authorized_key:
+    user: "{{ item.name }}"
+    key: "{{ item.public_key }}"
+    exclusive: "{{ item.exclusive | default(false) }}"
