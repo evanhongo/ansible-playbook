@@ -1,0 +1,4 @@
+---
+
+- name: Startup service1
+  shell: "cd {{ docker_deploy_base_dir }} && docker-compose up -d service1"

@@ -1,0 +1,26 @@
+---
+
+- name: Configure ssh related settings
+  hosts: "{{ groups.all }}"
+  any_errors_fatal: true
+  roles:
+    - role: push-ssh-keys
+  tags:
+    - ssh
+
+- name: Install docker engine and docker-compose
+  hosts: "{{ groups.all }}"
+  roles:
+    - role: docker
+  tags:
+    - docker
+
+- name: Install helm
+  hosts: "{{ groups.all }}"
+  roles:
+    - role: gantsign.helm
+      vars:
+        helm_version: 3.7.2
+        helm_architecture: amd64
+  tags:
+    - helm

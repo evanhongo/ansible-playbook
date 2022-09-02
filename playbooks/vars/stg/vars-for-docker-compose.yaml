@@ -1,0 +1,9 @@
+---
+
+service1:
+  image: 
+    name: service1
+    tag: v1.0.0
+  env:
+    - ENV={{ ENV }}
+    - PORT=4000

@@ -1,11 +1,10 @@
 version: '3.4'
 
 services:
-  dmp-gui-frontend:
-    image:   "{{ REGISTRY }}/dmp-gui-frontend:v1.0.0"
+  service1:
+    image:   "{{ REGISTRY }}/{{ service1.image.name }}:{{ service1.image.tag }}"
     restart: always
     environment:
-      - PRODUCT=staging
-      - PORT=4000
+      {{ service1.env | to_nice_yaml | indent(6, first=True) }}
     ports:
-      - 5570:4000
+      - 5570:{{ service1.env.PORT }}

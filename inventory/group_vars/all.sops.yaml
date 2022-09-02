@@ -1,7 +1,0 @@
----
-
-ansible_user: "devops"
-ansible_password: "devops"
-ansible_sudo_password: "devops"
-
-REGISTRY: ""

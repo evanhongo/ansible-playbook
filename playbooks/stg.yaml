@@ -1,22 +1,7 @@
 ---
 
-- name: Configure ssh related settings
-  hosts: "{{ groups.all }}"
-  any_errors_fatal: true
-  roles:
-    - role: ssh
-  tags:
-    - ssh
-
-- name: Install docker engine and docker-compose
-  hosts: "{{ groups.all }}"
-  roles:
-    - role: docker
-  tags:
-    - docker
-
 - name: Update docker-compose.yaml
-  hosts: "{{ groups.all }}"
+  hosts: "{{ groups.staging }}"
   become: yes
   any_errors_fatal: true
   roles:
@@ -24,12 +9,13 @@
   tags:
     - docker-compose
 
-- name: Install helm
-  hosts: "{{ groups.all }}"
+- name: Deploy service1  
+  hosts: "{{ groups.staging_service1 }}"
+  become: yes
+  any_errors_fatal: true
   roles:
-    - role: gantsign.helm
-      vars:
-        helm_version: 3.7.2
-        helm_architecture: amd64
+    - service1
+  vars_files:
+    - vars/stg/vars-for-docker-compose.yaml
   tags:
-    - helm
+    - service1

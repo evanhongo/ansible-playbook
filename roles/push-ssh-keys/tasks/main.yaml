@@ -21,4 +21,3 @@
   shell: "sshpass -p {{ ansible_password }} ssh-copy-id -i /home/{{ ansible_user }}/.ssh/id_rsa.pub {{ ansible_user }}@{{ item }}"
   with_items:
     - "{{ groups.all }}"
-  when: rsa_key_pair.stat.exists == False
