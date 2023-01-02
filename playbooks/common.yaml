@@ -1,7 +1,7 @@
 ---
 
 - name: Create users
-  hosts: wormhole
+  hosts: "{{ groups.all }}"
   vars_files: 
     - vars/users.yaml
   roles:
