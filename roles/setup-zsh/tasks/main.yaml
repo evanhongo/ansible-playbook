@@ -1,0 +1,47 @@
+---
+
+- community.general.homebrew:
+    name: zsh
+    state: present
+
+- name: Find the real path of Zsh
+  shell: "realpath $(which zsh)"
+  register: realpath   
+    
+- ansible.builtin.file:
+    src: "{{ realpath.stdout }}"
+    dest: /bin/zsh
+    state: link
+
+- ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.zim"
+    state: absent
+
+- ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.zimrc"
+    state: absent
+
+- name: Download .zshrc
+  get_url:
+    url: "https://raw.githubusercontent.com/evanhongo/dotfiles/master/.zshrc"
+    dest: "{{ ansible_env.HOME }}/.zshrc"
+
+- name: Download .p10k.zsh
+  get_url:
+    url: "https://raw.githubusercontent.com/evanhongo/dotfiles/master/.p10k.zsh"
+    dest: "{{ ansible_env.HOME }}/.p10k.zsh"
+
+- name: Install Zim (configuration framework)
+  shell: "wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh | /bin/zsh"
+
+- name: Theme configuration => Powerlevel10k
+  shell: "echo 'zmodule romkatv/powerlevel10k' >> ~/.zimrc"
+
+- name: Install Powerlevel10k
+  shell: "/bin/zsh -c 'source ~/.zim/zimfw.zsh install'"
+
+- name: Set default shell to Zsh
+  become: true
+  user:
+    name: "{{ ansible_user }}"
+    shell: /bin/zsh

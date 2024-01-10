@@ -3,7 +3,7 @@
 - name: Create users
   hosts: "{{ groups.all }}"
   vars_files: 
-    - vars/users.yaml
+    - vars/common/users.yaml
   roles:
     - role: create-user
       become: true
@@ -18,19 +18,23 @@
   tags:
     - ssh
 
-- name: Install docker engine and docker-compose
+- name: Install Homebrew 
   hosts: "{{ groups.all }}"
   roles:
-    - role: docker
+    - role: homebrew
   tags:
-    - docker
+    - homebrew
 
-- name: Install helm
+- name: Install command line tools that boost developer productivity 
   hosts: "{{ groups.all }}"
   roles:
-    - role: gantsign.helm
-      vars:
-        helm_version: 3.7.2
-        helm_architecture: amd64
+    - role: common-cli
   tags:
-    - helm
+    - cli
+
+- name: Setup Zsh
+  hosts: "{{ groups.all }}"
+  roles:
+    - role: setup-zsh
+  tags:
+    - zsh

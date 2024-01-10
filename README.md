@@ -1,16 +1,28 @@
-# Introduction
+# Ansible Playbook
 
-## Check whether every node is accessible
+## Contents
+
+- Command line tools that boost developer productivity
+- Zsh setup
+
+## Instructions
+
+1. Install required tools
+```sh
+make
+```
+
+2. Check whether every node is accessible
 ```sh
 ansible -i ./inventory/hosts.ini -m ping all
 ```
 
-## Start!
+3. Execute playbook
 ```sh
-ansible-playbook ./playbooks/stg.yaml -i ./inventory/stg.ini --tags helm -v -K
+ansible-playbook ./common.yaml -i ./inventory/local.ini -t cli -v -K
 ```
 
 ---
 
 # Reference
-- ## [Publish multiple roles using Ansible-Galaxy Collections](https://medium.com/linuxworld-informatics-pvt-ltd/publish-multiple-roles-using-ansible-galaxy-collections-27c29a0e7a28)
+- [Publish multiple roles using Ansible-Galaxy Collections](https://medium.com/linuxworld-informatics-pvt-ltd/publish-multiple-roles-using-ansible-galaxy-collections-27c29a0e7a28)

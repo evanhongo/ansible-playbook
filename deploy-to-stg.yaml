@@ -2,8 +2,10 @@
 
 - name: Update docker-compose.yaml
   hosts: "{{ groups.staging }}"
-  become: yes
+  become: true
   any_errors_fatal: true
+  vars_files: 
+    - vars/deployment/vars-for-docker-compose.yaml
   roles:
     - role: docker-compose
   tags:
@@ -11,10 +13,10 @@
 
 - name: Deploy service1  
   hosts: "{{ groups.staging_service1 }}"
-  become: yes
+  become: true
   any_errors_fatal: true
   vars_files:
-    - vars/stg/vars-for-docker-compose.yaml
+    - vars/deployment/vars-for-docker-compose.yaml
   roles:
     - service1  
   tags:

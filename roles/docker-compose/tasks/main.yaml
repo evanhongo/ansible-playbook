@@ -1,13 +1,13 @@
 ---
 
-- name: Make sure "{{ deploy_base_dir }}" exists
+- name: Make sure "{{ docker_deploy_base_dir }}" exists
   file:
-    path: "{{ deploy_base_dir }}"
+    path: "{{ docker_deploy_base_dir }}"
     state: directory
 
 - name: Copy docker-compose.yaml
   template:
     backup: yes
     src: "docker-compose.{{ ENV }}.yml"
-    dest: "{{ deploy_base_dir }}/docker-compose.yaml"
+    dest: "{{ docker_deploy_base_dir }}/docker-compose.yaml"
     mode: '0777'

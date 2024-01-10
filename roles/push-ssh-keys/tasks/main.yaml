@@ -1,7 +1,7 @@
 ---
 
 - name: Close ssh check
-  become: yes
+  become: true
   lineinfile:
     dest: /etc/ssh/ssh_config
     state: present

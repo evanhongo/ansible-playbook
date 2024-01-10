@@ -1,0 +1,3 @@
+- community.general.homebrew:
+    name: tmux,commitizen,exa,bat,fd,the_silver_searcher,htop,jq,thefuck,fzf,httpie,lazydocker,cmatrix
+    state: present
