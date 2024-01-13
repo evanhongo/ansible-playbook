@@ -1,0 +1,70 @@
+- name: Setup LightDM
+  hosts: "{{ groups.all }}"
+  tasks:
+    - name: Install LightDM
+      ansible.builtin.package:
+        name: lightdm
+        state: present
+  tags:
+    - lightdm
+
+- name: Setup greeter
+  hosts: "{{ groups.all }}"
+  become: true
+  tasks:
+    - name: Install dependencies for web-greeter
+      ansible.builtin.package:
+        name:
+          - liblightdm-gobject-1-dev
+          - gobject-introspection
+        state: present
+    - name: Download source code of web-greeter for LightDM
+      ansible.builtin.git:
+        repo: https://github.com/JezerM/web-greeter.git
+        dest: /tmp/web-greeter
+        single_branch: yes
+        version: master
+        recursive: true
+    - name: Install greeter
+      shell: "cd /tmp/web-greeter && make install"
+    - ansible.builtin.file:
+        path: "/tmp/web-greeter"
+        state: absent
+      become: true
+    - name: Configure LightDM
+      lineinfile:
+        dest: /etc/lightdm/lightdm.conf
+        state: present
+        regexp: "^greeter-session"
+        line: "greeter-session=web-greeter"
+  tags:
+    - web-greeter
+
+- name: Download greeter theme
+  hosts: "{{ groups.all }}"
+  become: true
+  tasks:
+    - ansible.builtin.git:
+        repo: https://github.com/evanhongo/lightdm-webkit2-theme-glorious.git
+        dest: /usr/share/web-greeter/themes/glorious
+        single_branch: yes
+        version: master
+    - ansible.builtin.git:
+        repo: https://github.com/evanhongo/lightdm-theme-gradient.git
+        dest: /usr/share/web-greeter/themes/gradient
+        single_branch: yes
+        version: master
+  tags:
+    - greeter-theme
+
+- name: Configure web-greeter
+  hosts: "{{ groups.all }}"
+  become: true
+  tasks:
+    - lineinfile:
+        dest: /etc/lightdm/web-greeter.yml
+        state: present
+        regexp: "    theme:"
+        line: "    theme: {{ theme }}"
+  tags:
+    - greeter-config

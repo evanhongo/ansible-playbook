@@ -1,0 +1,32 @@
+- name: Setup GRUB
+  hosts: "{{ groups.all }}"
+  become: true
+  tasks:
+    - name: Download StarRail grub theme
+      ansible.builtin.git:
+        repo: https://github.com/voidlhf/StarRailGrubThemes.git
+        dest: /usr/share/grub/themes/StarRailGrubThemes
+        single_branch: yes
+        version: master
+    - name: Configure grub timeout style
+      lineinfile:
+        dest: /etc/default/grub
+        state: present
+        regexp: "^GRUB_TIMEOUT_STYLE="
+        line: "GRUB_TIMEOUT_STYLE=menu"
+    - name: Configure grub timeout
+      lineinfile:
+        dest: /etc/default/grub
+        state: present
+        regexp: "^GRUB_TIMEOUT="
+        line: "GRUB_TIMEOUT=-1"
+    - name: Configure grub theme
+      lineinfile:
+        dest: /etc/default/grub
+        state: present
+        regexp: "^GRUB_THEME="
+        line: "GRUB_THEME=/usr/share/grub/themes/StarRailGrubThemes/assets/themes/RuanMei/theme.txt"
+    - name: Update grub
+      shell: "grub-mkconfig -o /boot/grub/grub.cfg"
+  tags:
+    - grub

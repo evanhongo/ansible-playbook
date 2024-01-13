@@ -1,0 +1,22 @@
+---
+
+- name: Install Homebrew 
+  hosts: "{{ groups.all }}"
+  roles:
+    - role: homebrew
+  tags:
+    - homebrew
+
+- name: Install command line tools that boost developer productivity 
+  hosts: "{{ groups.all }}"
+  roles:
+    - role: common-cli
+  tags:
+    - cli
+
+- name: Setup Zsh
+  hosts: "{{ groups.all }}"
+  roles:
+    - role: setup-zsh
+  tags:
+    - zsh
