@@ -1,16 +1,17 @@
 ---
-
-- name: Install Homebrew 
+- name: Install Homebrew
   hosts: "{{ groups.all }}"
-  roles:
-    - role: homebrew
+  tasks:
+    - shell: "/bin/bash -c $(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   tags:
     - homebrew
 
-- name: Install command line tools that boost developer productivity 
+- name: Install command line tools that boost developer productivity
   hosts: "{{ groups.all }}"
-  roles:
-    - role: common-cli
+  tasks:
+    - community.general.homebrew:
+      name: tmux,commitizen,exa,bat,fd,the_silver_searcher,htop,jq,thefuck,fzf,httpie,lazydocker,yt-dlp,cmatrix
+      state: present
   tags:
     - cli
 
