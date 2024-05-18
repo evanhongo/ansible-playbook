@@ -1,9 +1,0 @@
-version: "3.4"
-
-services:
-  service1:
-    image: "{{ registry }}/{{ service1.image.name }}:{{ service1.image.tag }}"
-    restart: always
-    environment: { { service1.env | to_nice_yaml | indent(6, first=True) } }
-    ports:
-      - 5570:{{ service1.env.PORT }}

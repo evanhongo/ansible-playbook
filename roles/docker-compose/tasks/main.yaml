@@ -1,13 +1,17 @@
 ---
-
 - name: Make sure "{{ docker_deploy_base_dir }}" exists
   file:
     path: "{{ docker_deploy_base_dir }}"
     state: directory
 
 - name: Copy docker-compose.yaml
-  template:
-    backup: yes
-    src: "docker-compose.{{ ENV }}.yml"
+  ansible.builtin.template:
+    src: "docker-compose.j2"
     dest: "{{ docker_deploy_base_dir }}/docker-compose.yaml"
-    mode: '0777'
+    mode: "0700"
+
+- name: Copy docker-compose assets
+  ansible.builtin.copy:
+    src: "assets/{{ ENV }}/"
+    dest: "{{ docker_deploy_base_dir }}/"
+    mode: "0700"

@@ -1,0 +1,12 @@
+version: "3.4"
+
+services:
+  service1:
+    image: {{ registry }}/{{ service1.image.name }}:{{ service1.image.tag }}
+    restart: always
+    environment: 
+{% for key, value in service1.env.items() %}
+      - {{ key }}: {{ value }}
+{% endfor %}
+    ports:
+      - {{ service1.env.PORT }}:{{ service1.env.PORT }}
