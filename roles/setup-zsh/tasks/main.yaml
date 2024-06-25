@@ -1,13 +1,12 @@
 ---
-
 - community.general.homebrew:
     name: zsh
     state: present
 
 - name: Find the real path of Zsh
   shell: "realpath $(which zsh)"
-  register: realpath   
-    
+  register: realpath
+
 - ansible.builtin.file:
     src: "{{ realpath.stdout }}"
     dest: /bin/zsh
@@ -25,6 +24,9 @@
   get_url:
     url: "https://raw.githubusercontent.com/evanhongo/dotfiles/master/.zshrc"
     dest: "{{ ansible_env.HOME }}/.zshrc"
+
+- name: Zoxide configuration
+  shell: "echo 'eval $(zoxide init zsh)' >> ~/.zshrc"
 
 - name: Download .p10k.zsh
   get_url:

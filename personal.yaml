@@ -10,7 +10,7 @@
   hosts: "{{ groups.all }}"
   tasks:
     - community.general.homebrew:
-      name: tmux,commitizen,exa,bat,fd,the_silver_searcher,htop,jq,thefuck,fzf,httpie,lazydocker,yt-dlp,cmatrix
+      name: htop,exa,bat,jq,tmux,commitizen,zoxide,fd,thefuck,fzf,ripgrep,yazi,httpie,lazydocker,yt-dlp,cmatrix
       state: present
   tags:
     - cli
