@@ -26,7 +26,7 @@
     dest: "{{ ansible_env.HOME }}/.zshrc"
 
 - name: Zoxide configuration
-  shell: "echo 'eval $(zoxide init zsh)' >> ~/.zshrc"
+  shell: echo 'eval "$(zoxide init zsh)"' >> ~/.zshrc
 
 - name: Download .p10k.zsh
   get_url:
