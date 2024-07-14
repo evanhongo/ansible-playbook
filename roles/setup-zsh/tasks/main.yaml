@@ -34,7 +34,7 @@
     dest: "{{ ansible_env.HOME }}/.p10k.zsh"
 
 - name: Install Zim (configuration framework)
-  shell: "wget -nv -O - https://raw.githubusercontent.com/zimfw/install/master/install.zsh | /bin/zsh"
+  shell: "curl -sSL https://raw.githubusercontent.com/zimfw/install/master/install.zsh | /bin/zsh"
 
 - name: Theme configuration => Powerlevel10k
   shell: "echo 'zmodule romkatv/powerlevel10k' >> ~/.zimrc"
